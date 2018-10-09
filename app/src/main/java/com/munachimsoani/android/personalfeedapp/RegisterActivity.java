@@ -84,6 +84,8 @@ public class RegisterActivity extends AppCompatActivity {
             mFirstNameTextInputLayout.setError("First Name  cannot be empty");
             mFirstNameTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
 
+
+
             return  false;
         } else {
 
