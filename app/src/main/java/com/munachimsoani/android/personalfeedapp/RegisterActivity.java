@@ -1,5 +1,7 @@
 package com.munachimsoani.android.personalfeedapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -122,6 +124,12 @@ public class RegisterActivity extends AppCompatActivity {
             mEmailTextInputLayout.setError("Email cannot be empty");
             mEmailTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             return  false;
+        } else if(!emailInput.contains("@")){
+
+            mEmailTextInputLayout.setError("Email is invalid");
+            mEmailTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+            return  false;
+
         } else {
 
             mEmailTextInputLayout.setError(null);
@@ -140,7 +148,12 @@ public class RegisterActivity extends AppCompatActivity {
             mPhoneNumberInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
 
             return  false;
-        } else {
+        } else if(phoneNumberInput.length() < 10){
+            mPhoneNumberInputLayout.setError("Phone Number cannot be lest than 10 digits");
+            mPhoneNumberInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+            return false;
+        }
+        else {
 
             mPhoneNumberInputLayout.setError(null);
             return true;
@@ -159,6 +172,14 @@ public class RegisterActivity extends AppCompatActivity {
             mPasswordTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
 
             return  false;
+        } else if(passwordInput.length() < 8){
+
+            mPasswordTextInputLayout.setError("Password cannot be less than 8 characters");
+            mPasswordTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
+
+            return  false;
+
+
         } else {
 
             mPasswordTextInputLayout.setError(null);
@@ -168,7 +189,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    //    Validate Password
+    //    Validate Confirm Password
 
     private boolean validateConfirmPassword(){
 
@@ -196,8 +217,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void attemptRegistration() {
 
-        if(!validateFirstName() | !validateLastName() | !validateEmail() | !validatePhoneNumber() | !validatePassword() | !validateConfirmPassword()){
-
+        if(!validateFirstName() | !validateLastName() | !validateEmail() | !validatePhoneNumber() | !validatePassword() | !validateConfirmPassword()) {
+            return;
         } else {
             createFirebaseUser();
         }
@@ -212,11 +233,10 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
-                Log.d("FlashChat", "createUser onComplete: " + task.isSuccessful());
-
                 if(!task.isSuccessful()){
-                    Log.d("FlashChat", "create creation failed");
-                    Toast.makeText(getApplicationContext(),"Registration attempt failed",Toast.LENGTH_SHORT).show();
+                   showErrorDialog("Registration attempt failed");
+
+                    //Toast.makeText(getApplicationContext(),"Registration attempt failed",Toast.LENGTH_SHORT).show();
 
                 }else {
                     saveDisplayName();
@@ -267,6 +287,19 @@ public class RegisterActivity extends AppCompatActivity {
         mDatabase.child("users/").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
 
 
+    }
+
+
+    // Alert Dialog if Registration fails
+
+    private void showErrorDialog(String message){
+
+        new AlertDialog.Builder(this)
+                .setTitle("Oops")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok,null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
 }
