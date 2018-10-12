@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout mEmailTextInputLayout;
     private TextInputLayout mPasswordTextInputLayout;
     private SignInButton signInButton;
-    private  GoogleSignInClient mGoogleSignInClient;
+      private GoogleSignInClient mGoogleSignInClient;
     private int RC_SIGN_IN = 1;
     private  final String TAG = "Personal Feed App";
 
@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         // Set the dimensions of the sign-in button.
          signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
-        signInButton.
+
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
