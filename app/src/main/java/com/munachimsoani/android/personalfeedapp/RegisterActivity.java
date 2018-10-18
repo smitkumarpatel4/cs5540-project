@@ -149,7 +149,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             return  false;
         } else if(phoneNumberInput.length() < 10){
-            mPhoneNumberInputLayout.setError("Phone Number cannot be lest than 10 digits");
+            mPhoneNumberInputLayout.setError("Phone Number cannot be at least than 10 digits");
             mPhoneNumberInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
             return false;
         }
@@ -174,7 +174,7 @@ public class RegisterActivity extends AppCompatActivity {
             return  false;
         } else if(passwordInput.length() < 8){
 
-            mPasswordTextInputLayout.setError("Password cannot be less than 8 characters");
+            mPasswordTextInputLayout.setError("Password cannot be at least than 8 characters");
             mPasswordTextInputLayout.setErrorTextColor(ColorStateList.valueOf(Color.RED));
 
             return  false;
@@ -266,7 +266,7 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Log.d("FlashChat", "User name updated.");
+                                Log.d("Personal Feed App", "User name updated.");
                             }
                         }
                     });

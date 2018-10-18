@@ -130,12 +130,14 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI();
+//                            FirebaseUser user = mAuth.getCurrentUser();
 
-//                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                            finish();
-//                            startActivity(intent);
+                            FirebaseUser user = mAuth.getCurrentUser();
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+
+//
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -143,20 +145,21 @@ public class LoginActivity extends AppCompatActivity {
                             showErrorDialog("Authentication Failed");
                         }
 
-                        // ...
+
                     }
                 });
     }
 
     private void updateUI() {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        finish();
-        startActivity(intent);
+
+
+//        showErrorDialog("User does not exist");
+
     }
 
-    // Executed when Sign Up button is pressed.
-    public void signUp(View v) {
-        attemptRegistration();
+    // Executed when Sign In button is pressed.
+    public void signIn(View v) {
+        attemptLogin();
     }
 
 
@@ -178,6 +181,9 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 break;
+
+                default:
+                    break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -235,7 +241,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     //
-    public void attemptRegistration(){
+    public void attemptLogin(){
         if(!validateEmail() | !validatePassword()){
             return;
         } else {
@@ -254,10 +260,12 @@ public class LoginActivity extends AppCompatActivity {
                     if(!task.isSuccessful()){
                         showErrorDialog("There was a problem signing in!. Please check your login details");
                     } else {
-//                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                        finish();
-//                        startActivity(intent);
-                        updateUI();
+//
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+
+//                        updateUI();
                     }
                 }
             });

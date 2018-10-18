@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/action_sign_in_short"
                 android:layout_marginBottom="7dp"
-                android:onClick="signUp"/>
+                android:onClick="signIn"/>
 
             <!--<TextView-->
                 <!--android:layout_width="match_parent"-->
