@@ -4,6 +4,7 @@
     android:layout_height="140dp"
     android:background="@color/colorPrimary"
     android:layout_gravity="center"
+    android:id="@+id/nav_view"
     >
 
     <ImageView

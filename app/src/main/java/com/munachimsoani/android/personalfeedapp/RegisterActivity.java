@@ -258,7 +258,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (user !=null) {
             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(displayName)
+                    .setDisplayName(displayName.toUpperCase())
                     .build();
 
             user.updateProfile(profileUpdates)
