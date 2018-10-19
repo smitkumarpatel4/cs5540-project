@@ -34,7 +34,7 @@
     <string name="header_string">Header Navigation</string>
 
     <string name="main_layout_string">Main Layout</string>
-
+    <string name="top_stories_string"><u>Top Stories</u></string>
 
 
 </resources>
