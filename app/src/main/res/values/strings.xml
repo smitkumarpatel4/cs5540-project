@@ -35,6 +35,9 @@
 
     <string name="main_layout_string">Main Layout</string>
     <string name="top_stories_string"><u>Top Stories</u></string>
+    <string name="sports_string"><u>Sports</u></string>
+    <string name="sports_string_nav">Sports</string>
+    <string name="top_stories_nav">Top Stories</string>
 
 
 </resources>

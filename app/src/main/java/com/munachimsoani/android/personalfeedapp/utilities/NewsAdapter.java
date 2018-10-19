@@ -1,6 +1,7 @@
 package com.munachimsoani.android.personalfeedapp.utilities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.munachimsoani.android.personalfeedapp.R;
+import com.munachimsoani.android.personalfeedapp.WebViewActivity;
 import com.munachimsoani.android.personalfeedapp.model.News;
 import com.squareup.picasso.Picasso;
 
@@ -66,13 +68,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
             title = itemView.findViewById(R.id.news_title);
             abstracts = itemView.findViewById(R.id.abstracts);
 
+
         }
 
 
         void  bind(final int listIndex){
-
-
-
 
             title.setText(mNews.get(listIndex).getTitle());
             abstracts.setText(mNews.get(listIndex).getAbstracts());
@@ -80,8 +80,20 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
             Uri uri = Uri.parse(mNews.get(listIndex).getImage_url());
             if(uri !=null){
                 Picasso.get().load(uri).into(image);
-
             }
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    String urlString = mNews.get(listIndex).getUrl();
+
+                    Intent intent = new Intent(mContext,WebViewActivity.class);
+                    intent.putExtra("urlString",urlString);
+                    mContext.startActivity(intent);
+
+                }
+            });
 
 
         }

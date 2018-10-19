@@ -2,7 +2,6 @@ package com.munachimsoani.android.personalfeedapp;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -32,7 +31,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class SportsActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
@@ -47,11 +46,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ProgressBar mProgressBar;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_sports);
 
         mProgressBar = findViewById(R.id.progressbar);
 
@@ -102,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
 
-        makeNetworkQueryTopStories();
+        makeNetworkQuerySports();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -129,12 +127,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
 
-    public void makeNetworkQueryTopStories() {
-        URL networkURL = NetworkUtils.buildUrlTopStories();
+    public void makeNetworkQuerySports() {
+        URL networkURL = NetworkUtils.buildUrlSports();
         Log.d("test", networkURL.toString());
         // mSearchResultsTextView.setText(networkURL.toString());
         new NewsTask().execute(networkURL);
@@ -149,6 +146,8 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     public class NewsTask extends AsyncTask<URL, Void, String> {
         @Override
