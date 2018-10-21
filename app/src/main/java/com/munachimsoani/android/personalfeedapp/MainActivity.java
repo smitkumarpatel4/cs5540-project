@@ -63,6 +63,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private ProgressBar mProgressBar;
 
+    private FirebaseUser user;
+
+    private FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +100,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mDisplayName = navHeaderView.findViewById(R.id.username);
         mUserEmail = navHeaderView.findViewById(R.id.user_email);
 
+        mAuth = FirebaseAuth.getInstance();
+
 
         //     Get user from firebase and display
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+         user = mAuth.getCurrentUser();
         if (user != null) {
             // Name, email address
             String name = user.getDisplayName();
@@ -137,6 +143,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         Intent intentSoccer = new Intent(getApplicationContext(), SportsActivity.class);
                         startActivity(intentSoccer);
                         finish();
+                        break;
+
+                    case R.id.nav_books:
+//                        Intent intentBook = new Intent(getApplicationContext(), BooksActivity.class);
+//                        startActivity(intentBook);
+//                        finish();
+//                        break;
+
+                    case R.id.nav_logout:
+                        mAuth.signOut();
+                        Intent intentLogout = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intentLogout);
+                        finish();
+                        break;
+                    default:
                         break;
 
 

@@ -82,6 +82,8 @@ public class LoginActivity extends AppCompatActivity {
 
         // Click the google sing button to sign in
 
+//        signInButton.setSize(8);
+
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

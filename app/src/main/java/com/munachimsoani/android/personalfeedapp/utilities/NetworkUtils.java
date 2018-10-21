@@ -13,6 +13,7 @@ public class NetworkUtils {
 
     private static final String  TOP_STORIES_BASE_URL = "https://api.nytimes.com/svc/topstories/v2/home.json";
     private static final String  SPORTS_BASE_URL = "https://api.nytimes.com/svc/topstories/v2/sports.json";
+    private static final String BOOKS_BEST_SELLER_NAMES = "https://api.nytimes.com/svc/books/v3/lists/names.json";
 
 
 
@@ -43,6 +44,22 @@ public class NetworkUtils {
     public static URL buildUrlSports(){
 
         Uri builtUri = Uri.parse(SPORTS_BASE_URL).buildUpon()
+                .appendQueryParameter(PARAM_API_KEY,API_KEY)
+                .build();
+
+        URL url = null;
+        try{
+            url = new URL(builtUri.toString());
+        }catch (MalformedURLException e){
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    public static URL buildBestSellerBooks(){
+
+        Uri builtUri = Uri.parse(BOOKS_BEST_SELLER_NAMES).buildUpon()
                 .appendQueryParameter(PARAM_API_KEY,API_KEY)
                 .build();
 

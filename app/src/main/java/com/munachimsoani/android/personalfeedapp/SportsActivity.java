@@ -47,7 +47,7 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
      */
     private static final int NEWS_LOADER = 22;
 
-    private final String TAG = "MainActivity";
+    private final String TAG = "SportsActivity";
 
 
     private DrawerLayout mDrawerLayout;
@@ -62,6 +62,10 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
     private ArrayList<News> news = new ArrayList<>();
 
     private ProgressBar mProgressBar;
+
+    private FirebaseUser user;
+
+    private FirebaseAuth mAuth;
 
 
     @Override
@@ -97,8 +101,11 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
         mUserEmail = navHeaderView.findViewById(R.id.user_email);
 
 
+        mAuth = FirebaseAuth.getInstance();
+
+
         //     Get user from firebase and display
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = mAuth.getCurrentUser();
         if (user != null) {
             // Name, email address
             String name = user.getDisplayName();
@@ -117,8 +124,8 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
 
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
-//      call makeNetworkQueryTopStories
-        makeNetworkQueryTopStories();
+//      call makeNetworkQuerySports
+        makeNetworkQuerySports();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -139,6 +146,21 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
                         finish();
                         break;
 
+//                    case R.id.nav_books:
+//                        Intent intentBook = new Intent(getApplicationContext(), BooksActivity.class);
+//                        startActivity(intentBook);
+//                        finish();
+//                        break;
+                    case R.id.nav_logout:
+                        mAuth.signOut();
+                        Intent intentLogout = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intentLogout);
+                        finish();
+                        break;
+
+                    default:
+                        break;
+
 
                 }
                 return false;
@@ -149,7 +171,7 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     // Create a method to get the news URL
-    public void makeNetworkQueryTopStories() {
+    public void makeNetworkQuerySports() {
         URL networkURL = NetworkUtils.buildUrlSports();
 //        Log.d(TAG, networkURL.toString());
         // mSearchResultsTextView.setText(networkURL.toString());

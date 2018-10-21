@@ -38,6 +38,10 @@
     <string name="sports_string"><u>Sports</u></string>
     <string name="sports_string_nav">Sports</string>
     <string name="top_stories_nav">Top Stories</string>
+    <string name="movie_review_string">Movies</string>
+    <string name="books_string">Books</string>
+    <string name="best_sellers_string">Best Sellers</string>
+    <string name="or_sign_in_with_string">Or sign in with</string>
 
 
 </resources>

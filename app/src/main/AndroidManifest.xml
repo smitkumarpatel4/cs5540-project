@@ -33,7 +33,7 @@
             android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".SportsActivity" />
-        <activity android:name=".WebViewActivity"></activity>
+        <activity android:name=".WebViewActivity" />
     </application>
 
 </manifest>

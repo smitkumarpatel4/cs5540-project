@@ -61,7 +61,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/action_sign_in_short"
                 android:layout_marginBottom="7dp"
-                android:onClick="signIn"/>
+                android:onClick="signIn"
+                />
 
             <!--<TextView-->
                 <!--android:layout_width="match_parent"-->
@@ -70,6 +71,14 @@
                 <!--android:layout_gravity="center_vertical|center_horizontal"-->
                 <!--android:gravity="center"-->
                 <!--android:textColor="@color/colorAccent"/>-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/or_sign_in_with_string"
+                android:layout_marginBottom="7dp"
+                android:textSize="15sp"
+                android:layout_gravity="center_horizontal"/>
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/sign_in_button"
