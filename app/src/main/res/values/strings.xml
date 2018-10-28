@@ -42,6 +42,10 @@
     <string name="books_string">Books</string>
     <string name="best_sellers_string">Best Sellers</string>
     <string name="or_sign_in_with_string">Or sign in with</string>
+    <string name="about_menu_string">About</string>
+    <string name="search_movie_string">Search Movie</string>
+    <string name="cancel_string">Cancel</string>
+    <string name="search_string">Search</string>
 
 
 </resources>

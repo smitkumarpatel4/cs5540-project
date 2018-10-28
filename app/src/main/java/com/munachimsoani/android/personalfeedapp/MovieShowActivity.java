@@ -3,13 +3,11 @@ package com.munachimsoani.android.personalfeedapp;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
+import android.support.v4.app.LoaderManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.DrawerLayout;
@@ -29,8 +27,10 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.munachimsoani.android.personalfeedapp.model.MovieReview;
 import com.munachimsoani.android.personalfeedapp.model.News;
 import com.munachimsoani.android.personalfeedapp.utilities.JSONUtils;
+import com.munachimsoani.android.personalfeedapp.utilities.MovieReviewAdapter;
 import com.munachimsoani.android.personalfeedapp.utilities.NetworkUtils;
 import com.munachimsoani.android.personalfeedapp.utilities.NewsAdapter;
 import com.munachimsoani.android.personalfeedapp.utilities.SimpleDividerItemDecoration;
@@ -39,7 +39,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class SportsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
+public class MovieShowActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
+
+    TextView mTextView;
+    String searchQuery;
 
     /* A constant to save and restore the URL that is being displayed */
     private static final String NEWS_QUERY_URL_EXTRA = "query";
@@ -50,7 +53,7 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
      */
     private static final int NEWS_LOADER = 22;
 
-    private final String TAG = "SportsActivity";
+    private final String TAG = "MainActivity";
 
 
     private DrawerLayout mDrawerLayout;
@@ -61,8 +64,8 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
     private TextView mUserEmail;
 
     private RecyclerView mRecyclerView;
-    private NewsAdapter mAdapter;
-    private ArrayList<News> news = new ArrayList<>();
+    private MovieReviewAdapter mAdapter;
+    private ArrayList<MovieReview> movieReview = new ArrayList<>();
 
     private ProgressBar mProgressBar;
 
@@ -74,7 +77,18 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_movie_show);
+
+       // mTextView = findViewById(R.id.tester);
+
+        Intent intent = getIntent();
+
+        searchQuery = null;
+        if (intent.hasExtra("searchQuery")) {
+            searchQuery = intent.getStringExtra("searchQuery");
+            //  mTextView.setText(searchQuery);
+            Log.d("test", searchQuery);
+        }
 
         mProgressBar = findViewById(R.id.progressbar);
 
@@ -103,7 +117,6 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
         mDisplayName = navHeaderView.findViewById(R.id.username);
         mUserEmail = navHeaderView.findViewById(R.id.user_email);
 
-
         mAuth = FirebaseAuth.getInstance();
 
 
@@ -120,15 +133,15 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
         }
 
 
-        mRecyclerView = findViewById(R.id.my_recycler_view);
-        mAdapter = new NewsAdapter(this, news);
+        mRecyclerView = findViewById(R.id.my_recycler_view_movie_review);
+        mAdapter = new MovieReviewAdapter(this, movieReview);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
-//      call makeNetworkQuerySports
-        makeNetworkQuerySports();
+//      call makeNetworkQueryMovieReview
+        makeNetworkQueryMovieReview();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -153,18 +166,12 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
                         showSearchDialogBox();
                         break;
 
-//                    case R.id.nav_books:
-//                        Intent intentBook = new Intent(getApplicationContext(), BooksActivity.class);
-//                        startActivity(intentBook);
-//                        finish();
-//                        break;
                     case R.id.nav_logout:
                         mAuth.signOut();
                         Intent intentLogout = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(intentLogout);
                         finish();
                         break;
-
                     default:
                         break;
 
@@ -174,12 +181,12 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
-
     }
 
+
     // Create a method to get the news URL
-    public void makeNetworkQuerySports() {
-        URL networkURL = NetworkUtils.buildUrlSports();
+    public void makeNetworkQueryMovieReview() {
+        URL networkURL = NetworkUtils.buildMovieReview(searchQuery);
 //        Log.d(TAG, networkURL.toString());
         // mSearchResultsTextView.setText(networkURL.toString());
 
@@ -190,7 +197,7 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
 
 //        Call getSupportLoaderManager and store it in a LoaderManager variable
         LoaderManager loaderManager = getSupportLoaderManager();
-        Loader<String> networkQueryTopStories = loaderManager.getLoader(NEWS_LOADER);
+        android.support.v4.content.Loader<String> networkQueryTopStories = loaderManager.getLoader(NEWS_LOADER);
 //        new NewsTask().execute(networkURL);
 
 //        If the Loader was null, initialize it. Else, restart it.
@@ -211,13 +218,10 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
         return super.onOptionsItemSelected(item);
     }
 
-
-    //    Override onCreateLoader
     @NonNull
     @Override
     public Loader<String> onCreateLoader(int i, @Nullable final Bundle bundle) {
         return new AsyncTaskLoader<String>(this) {
-
 
             //             Override onStartLoading
             @Override
@@ -229,9 +233,6 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
 //                Force a load
                 forceLoad();
             }
-
-//            Override loadInBackground
-
             @Nullable
             @Override
             public String loadInBackground() {
@@ -239,35 +240,32 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
 
 //           Parse the URL from the passed in String and fetch the data
                 String searchQueryUrlString = bundle.getString(NEWS_QUERY_URL_EXTRA);
-                String newsResults = null;
+                String movieResults = null;
 
                 try {
                     URL searchUrl = new URL(searchQueryUrlString);
-                    newsResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+                    movieResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-                return newsResults;
-
-
+                return movieResults;
             }
         };
     }
 
-//    Override onLoadFinished
-
     @Override
-    public void onLoadFinished(@NonNull Loader<String> loader, String newsResult) {
+    public void onLoadFinished(@NonNull Loader<String> loader, String movieResults) {
+
 
 //        Remove(hide) the progress bar after the data have been fetched
         mProgressBar.setVisibility(View.GONE);
 
 //        Get the POJO of the data
-        news = JSONUtils.makeNewsListTopStories(newsResult);
+        movieReview = JSONUtils.makeMovieReviewList(movieResults);
 
 //        Add the data to Recycler Adapter
-        mAdapter.mNews.addAll(news);
+        mAdapter.mMovieReviews.addAll(movieReview);
 
 //        Notify the Adapter if there is any change
         mAdapter.notifyDataSetChanged();
@@ -279,8 +277,9 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
 
     }
 
+
     public void showSearchDialogBox(){
-        AlertDialog.Builder builder =  new AlertDialog.Builder(SportsActivity.this);
+        AlertDialog.Builder builder =  new AlertDialog.Builder(MovieShowActivity.this);
         builder.setView(R.layout.activity_movie_search)
                 .setPositiveButton(android.R.string.search_go, new DialogInterface.OnClickListener() {
                     @Override
@@ -288,7 +287,7 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
                         TextInputEditText ti = ((AlertDialog)dialogInterface).findViewById(R.id.movieSearchQuery);
                         String searchQuery = ti.getText().toString();
 
-                        Intent movieIntent = new Intent(SportsActivity.this,MovieShowActivity.class);
+                        Intent movieIntent = new Intent(MovieShowActivity.this,MovieShowActivity.class);
                         movieIntent.putExtra("searchQuery",searchQuery);
                         startActivity(movieIntent);
                         //finish();
@@ -304,6 +303,4 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
                 })
                 .show();
     }
-
-
 }

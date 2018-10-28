@@ -34,6 +34,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".SportsActivity" />
         <activity android:name=".WebViewActivity" />
+        <activity android:name=".MovieSearchActivity" />
+        <activity android:name=".MovieShowActivity"></activity>
     </application>
 
 </manifest>
