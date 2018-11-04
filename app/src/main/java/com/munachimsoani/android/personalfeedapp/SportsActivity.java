@@ -22,10 +22,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -41,7 +39,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
+public class SportsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
 
     /* A constant to save and restore the URL that is being displayed */
     private static final String NEWS_QUERY_URL_EXTRA = "query";
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      */
     private static final int NEWS_LOADER = 22;
 
-    private final String TAG = "MainActivity";
+    private final String TAG = "SportsActivity";
 
 
     private DrawerLayout mDrawerLayout;
@@ -72,31 +70,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private FirebaseAuth mAuth;
 
+    TextView mtitle;
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//
-//        user = mAuth.getCurrentUser();
-//        if (user == null){
-//            sendToLogin();
-//        }
-//    }
-//
-//    private void sendToLogin() {
-//
-//        Intent loginIntent = new Intent(MainActivity.this,LoginActivity.class);
-//        startActivity(loginIntent);
-//        finish();
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mtitle = findViewById(R.id.heading);
+        mtitle.setText(R.string.sports_string_title);
         mProgressBar = findViewById(R.id.progressbar);
-        mProgressBar.setIndeterminate(true);
 
 
         mDrawerLayout = findViewById(R.id.drawerLayout);
@@ -123,11 +107,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mDisplayName = navHeaderView.findViewById(R.id.username);
         mUserEmail = navHeaderView.findViewById(R.id.user_email);
 
+
         mAuth = FirebaseAuth.getInstance();
 
 
         //     Get user from firebase and display
-         user = mAuth.getCurrentUser();
+        user = mAuth.getCurrentUser();
         if (user != null) {
             // Name, email address
             String name = user.getDisplayName();
@@ -146,8 +131,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
-//      call makeNetworkQueryTopStories
-        makeNetworkQueryTopStories();
+//      call makeNetworkQuerySports
+        makeNetworkQuerySports();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -157,13 +142,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                 switch (id) {
                     case R.id.nav_top_stories:
-                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                        Intent intent = new Intent(SportsActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
                         break;
 
                     case R.id.nav_sports:
-                        Intent intentSoccer = new Intent(MainActivity.this, SportsActivity.class);
+                        Intent intentSoccer = new Intent(SportsActivity.this, SportsActivity.class);
                         startActivity(intentSoccer);
                         finish();
                         break;
@@ -172,12 +157,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         showSearchDialogBox();
                         break;
 
+//                    case R.id.nav_books:
+//                        Intent intentBook = new Intent(getApplicationContext(), BooksActivity.class);
+//                        startActivity(intentBook);
+//                        finish();
+//                        break;
                     case R.id.nav_logout:
                         mAuth.signOut();
-                        Intent intentLogout = new Intent(MainActivity.this, LoginActivity.class);
+                        Intent intentLogout = new Intent(SportsActivity.this, LoginActivity.class);
                         startActivity(intentLogout);
                         finish();
                         break;
+
                     default:
                         break;
 
@@ -191,8 +182,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     // Create a method to get the news URL
-    public void makeNetworkQueryTopStories() {
-        URL networkURL = NetworkUtils.buildUrlTopStories();
+    public void makeNetworkQuerySports() {
+        URL networkURL = NetworkUtils.buildUrlSports();
 //        Log.d(TAG, networkURL.toString());
         // mSearchResultsTextView.setText(networkURL.toString());
 
@@ -292,22 +283,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
     public void showSearchDialogBox(){
-       AlertDialog.Builder builder =  new AlertDialog.Builder(MainActivity.this);
-              builder.setView(R.layout.activity_movie_search)
+        AlertDialog.Builder builder =  new AlertDialog.Builder(SportsActivity.this);
+        builder.setView(R.layout.activity_movie_search)
                 .setPositiveButton(android.R.string.search_go, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         TextInputEditText ti = ((AlertDialog)dialogInterface).findViewById(R.id.movieSearchQuery);
                         String searchQuery = ti.getText().toString();
 
-                        Intent movieIntent = new Intent(MainActivity.this,MovieSearchActivity.class);
+                        Intent movieIntent = new Intent(SportsActivity.this,MovieShowActivity.class);
                         movieIntent.putExtra("searchQuery",searchQuery);
                         startActivity(movieIntent);
                         //finish();

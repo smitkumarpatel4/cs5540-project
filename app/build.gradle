@@ -6,7 +6,7 @@ android {
         applicationId "com.munachimsoani.android.personalfeedapp"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 1
+        versionCode 4
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -16,10 +16,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildToolsVersion '28.0.0'
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:animated-vector-drawable:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
@@ -32,7 +33,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.3'
     implementation 'com.google.firebase:firebase-auth:16.0.1'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
 
 
 }
@@ -41,5 +44,3 @@ apply plugin: 'com.google.gms.google-services'
 
 
 com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
-
-

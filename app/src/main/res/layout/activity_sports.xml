@@ -22,21 +22,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/top_stories_string"
+            android:text="@string/sports_string_title"
             android:textAllCaps="true"
+            android:textStyle=""
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/colorAccent" />
 
         <ProgressBar
             android:id="@+id/progressbar"
-            style="@style/Base.ThemeOverlay.MaterialComponents.Dialog.Alert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:visibility="gone"
-            android:foregroundGravity="center"/>
-
-
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
 
 

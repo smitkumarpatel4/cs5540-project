@@ -5,7 +5,7 @@
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
 
-    <string name="prompt_password">Password must be at least 8 characters</string>
+    <string name="prompt_password">Password</string>
     <string name="prompt_password_confirm">Confirm Password</string>
 
     <string name="action_sign_in">Sign in or register</string>
@@ -24,6 +24,29 @@
     <string name="first_name_string_text">First Name</string>
     <string name="last_name_string_text">Last Name</string>
     <string name="phone_number_string_text">Phone Number</string>
+
+    <string name="my_account_string">My Account</string>
+    <string name="settings_string">Settings</string>
+    <string name="logout_string">Logout</string>
+
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="header_string">Header Navigation</string>
+
+    <string name="main_layout_string">Main Layout</string>
+    <string name="top_stories_string"><u>Top Stories</u></string>
+    <string name="sports_string"><u>Sports</u></string>
+    <string name="sports_string_nav">Sports</string>
+    <string name="top_stories_nav">Top Stories</string>
+    <string name="movie_review_string">Movies Review</string>
+    <string name="books_string">Books</string>
+    <string name="best_sellers_string">Best Sellers</string>
+    <string name="or_sign_in_with_string">Or sign in with</string>
+    <string name="about_menu_string">About</string>
+    <string name="search_movie_string">Search Movie</string>
+    <string name="cancel_string">Cancel</string>
+    <string name="search_string">Search</string>
+    <string name="sports_string_title"><u>Sports</u></string>
 
 
 </resources>
