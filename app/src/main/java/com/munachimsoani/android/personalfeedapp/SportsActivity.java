@@ -70,12 +70,16 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
 
     private FirebaseAuth mAuth;
 
+    TextView mtitle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mtitle = findViewById(R.id.heading);
+        mtitle.setText(R.string.sports_string_title);
         mProgressBar = findViewById(R.id.progressbar);
 
 
@@ -138,13 +142,13 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
 
                 switch (id) {
                     case R.id.nav_top_stories:
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent intent = new Intent(SportsActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
                         break;
 
                     case R.id.nav_sports:
-                        Intent intentSoccer = new Intent(getApplicationContext(), SportsActivity.class);
+                        Intent intentSoccer = new Intent(SportsActivity.this, SportsActivity.class);
                         startActivity(intentSoccer);
                         finish();
                         break;
@@ -160,7 +164,7 @@ public class SportsActivity extends AppCompatActivity implements LoaderManager.L
 //                        break;
                     case R.id.nav_logout:
                         mAuth.signOut();
-                        Intent intentLogout = new Intent(getApplicationContext(), LoginActivity.class);
+                        Intent intentLogout = new Intent(SportsActivity.this, LoginActivity.class);
                         startActivity(intentLogout);
                         finish();
                         break;

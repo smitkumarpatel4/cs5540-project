@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
 
         mProgressBar = findViewById(R.id.progressbar);
+        mProgressBar.setIndeterminate(true);
 
 
         mDrawerLayout = findViewById(R.id.drawerLayout);
@@ -156,13 +157,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                 switch (id) {
                     case R.id.nav_top_stories:
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
                         break;
 
                     case R.id.nav_sports:
-                        Intent intentSoccer = new Intent(getApplicationContext(), SportsActivity.class);
+                        Intent intentSoccer = new Intent(MainActivity.this, SportsActivity.class);
                         startActivity(intentSoccer);
                         finish();
                         break;
@@ -173,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                     case R.id.nav_logout:
                         mAuth.signOut();
-                        Intent intentLogout = new Intent(getApplicationContext(), LoginActivity.class);
+                        Intent intentLogout = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intentLogout);
                         finish();
                         break;
@@ -306,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         TextInputEditText ti = ((AlertDialog)dialogInterface).findViewById(R.id.movieSearchQuery);
                         String searchQuery = ti.getText().toString();
 
-                        Intent movieIntent = new Intent(MainActivity.this,MovieShowActivity.class);
+                        Intent movieIntent = new Intent(MainActivity.this,MovieSearchActivity.class);
                         movieIntent.putExtra("searchQuery",searchQuery);
                         startActivity(movieIntent);
                         //finish();

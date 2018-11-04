@@ -64,6 +64,9 @@ public class LoginActivity extends AppCompatActivity {
          signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
 
+        // Get hold of the firebase instance variable
+        mAuth = FirebaseAuth.getInstance();
+
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -76,9 +79,18 @@ public class LoginActivity extends AppCompatActivity {
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        FirebaseUser user =mAuth.getCurrentUser();
 
-        // Get hold of the firebase instance variable
-        mAuth = FirebaseAuth.getInstance();
+        // Check ig firebase user exits and redirect to the MainActivity
+
+        if(user != null){
+            Intent mainActivitityIntent = new Intent(LoginActivity.this,MainActivity.class);
+            startActivity(mainActivitityIntent);
+            this.finish();
+        }
+
+
+
 
         // Click the google sing button to sign in
 
@@ -96,11 +108,46 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+//    Override the menu to add your own menu
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(register_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+//    Add click listeners to the menu item
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+
+            case R.id.user_register:
+                Intent intent = new Intent(getApplicationContext(),
+                        RegisterActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
     // Sign into with google
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
+    // Executed when Sign In button is pressed.
+    public void signIn(View v) {
+        attemptLogin();
+    }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -122,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+       // Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -152,42 +199,54 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    private void updateUI() {
-
-
-//        showErrorDialog("User does not exist");
-
-    }
-
-    // Executed when Sign In button is pressed.
-    public void signIn(View v) {
-        attemptLogin();
-    }
 
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    // attempt to sign in
+    public void attemptLogin(){
+        if(!validateEmail() | !validatePassword()){
+            return;
+        } else {
+            String email = mEmailTextInputLayout.getEditText().getText().toString();
+            String password = mPasswordTextInputLayout.getEditText().getText().toString();
 
-        getMenuInflater().inflate(register_menu,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+            Toast.makeText(LoginActivity.this,"Login Loading", Toast.LENGTH_SHORT).show();
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
 
-            case R.id.user_register:
-                Intent intent = new Intent(getApplicationContext(),
-                        RegisterActivity.class);
-                startActivity(intent);
-                finish();
-                break;
+            // Use FirebaseAuth to sign in with email & password
 
-                default:
-                    break;
+            mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                    if(!task.isSuccessful()){
+                        showErrorDialog("There was a problem signing in!. Please check your login details");
+                    } else {
+//
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+
+//                        updateUI();
+                    }
+                }
+            });
         }
-        return super.onOptionsItemSelected(item);
+    }
+
+
+
+
+    // Alert Dialog if Login fails
+
+    private void showErrorDialog(String message){
+
+        new AlertDialog.Builder(this)
+                .setTitle("Oops")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok,null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     //    Validate Email
@@ -240,54 +299,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
-
-    //
-    public void attemptLogin(){
-        if(!validateEmail() | !validatePassword()){
-            return;
-        } else {
-            String email = mEmailTextInputLayout.getEditText().getText().toString();
-            String password = mPasswordTextInputLayout.getEditText().getText().toString();
-
-            Toast.makeText(LoginActivity.this,"Login Loading", Toast.LENGTH_SHORT).show();
-
-
-            // Use FirebaseAuth to sign in with email & password
-
-            mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-
-                    if(!task.isSuccessful()){
-                        showErrorDialog("There was a problem signing in!. Please check your login details");
-                    } else {
-//
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-
-//                        updateUI();
-                    }
-                }
-            });
-        }
-    }
-
-
-
-
-    // Alert Dialog if Login fails
-
-    private void showErrorDialog(String message){
-
-        new AlertDialog.Builder(this)
-                .setTitle("Oops")
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok,null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-    }
 }
 
 

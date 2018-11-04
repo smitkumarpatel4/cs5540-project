@@ -151,13 +151,13 @@ public class MovieShowActivity extends AppCompatActivity implements LoaderManage
 
                 switch (id) {
                     case R.id.nav_top_stories:
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent intent = new Intent(MovieShowActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
                         break;
 
                     case R.id.nav_sports:
-                        Intent intentSoccer = new Intent(getApplicationContext(), SportsActivity.class);
+                        Intent intentSoccer = new Intent(MovieShowActivity.this, SportsActivity.class);
                         startActivity(intentSoccer);
                         finish();
                         break;
@@ -168,7 +168,7 @@ public class MovieShowActivity extends AppCompatActivity implements LoaderManage
 
                     case R.id.nav_logout:
                         mAuth.signOut();
-                        Intent intentLogout = new Intent(getApplicationContext(), LoginActivity.class);
+                        Intent intentLogout = new Intent(MovieShowActivity.this, LoginActivity.class);
                         startActivity(intentLogout);
                         finish();
                         break;
@@ -263,6 +263,8 @@ public class MovieShowActivity extends AppCompatActivity implements LoaderManage
 
 //        Get the POJO of the data
         movieReview = JSONUtils.makeMovieReviewList(movieResults);
+
+
 
 //        Add the data to Recycler Adapter
         mAdapter.mMovieReviews.addAll(movieReview);

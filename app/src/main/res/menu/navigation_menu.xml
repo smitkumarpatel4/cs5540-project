@@ -15,10 +15,10 @@
         android:id="@+id/nav_movie_reviews"
         android:title="@string/movie_review_string"
         android:icon="@drawable/ic_local_movies_black_24dp"/>
-    <item
-        android:id="@+id/nav_books"
-        android:title="@string/books_string"
-        android:icon="@drawable/ic_collections_bookmark_black_24dp"/>
+    <!--<item-->
+        <!--android:id="@+id/nav_books"-->
+        <!--android:title="@string/books_string"-->
+        <!--android:icon="@drawable/ic_collections_bookmark_black_24dp"/>-->
 
     <!--<item-->
         <!--android:id="@+id/nav_settings"-->

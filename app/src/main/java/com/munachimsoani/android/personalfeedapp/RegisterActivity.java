@@ -23,6 +23,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.collection.LLRBNode;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -76,6 +77,97 @@ public class RegisterActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
+    }
+
+
+
+
+    private void attemptRegistration() {
+
+        if(!validateFirstName() | !validateLastName() | !validateEmail() | !validatePhoneNumber() | !validatePassword() | !validateConfirmPassword()) {
+            return;
+        } else {
+            createFirebaseUser();
+        }
+    }
+
+
+    private void createFirebaseUser(){
+
+        String email = mEmailTextInputLayout.getEditText().getText().toString();
+        String password = mPasswordTextInputLayout.getEditText().getText().toString();
+        mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                if(!task.isSuccessful()){
+                   showErrorDialog("Registration attempt failed");
+
+                    //Toast.makeText(getApplicationContext(),"Registration attempt failed",Toast.LENGTH_SHORT).show();
+
+                }else {
+                    saveDisplayName();
+                    saveUser();
+
+                    Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+                    finish();
+                    startActivity(intent);
+                }
+            }
+        });
+    }
+
+
+    private void saveDisplayName() {
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        String displayName = mFirstNameTextInputLayout.getEditText().getText().toString();
+
+        if (user !=null) {
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(displayName.toUpperCase())
+                    .build();
+
+            user.updateProfile(profileUpdates)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("Personal Feed App", "User name updated.");
+                            }
+                        }
+                    });
+
+        }
+
+    }
+
+    public void saveUser(){
+
+        String firstName = mFirstNameTextInputLayout.getEditText().getText().toString();
+        String lastName = mLastNameInputLayout.getEditText().getText().toString();
+        String email = mEmailTextInputLayout.getEditText().getText().toString();
+        String phoneNumber = mPhoneNumberInputLayout.getEditText().getText().toString();
+        String tokenID = FirebaseInstanceId.getInstance().getToken();
+
+        User user =  new User(firstName,lastName,email,phoneNumber,tokenID);
+
+        mDatabase.child("users/").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
+
+
+    }
+
+
+    // Alert Dialog if Registration fails
+
+    private void showErrorDialog(String message){
+
+        new AlertDialog.Builder(this)
+                .setTitle("Oops")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok,null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     // Validate First Name
@@ -212,94 +304,6 @@ public class RegisterActivity extends AppCompatActivity {
     // Executed when Sign Up button is pressed.
     public void signUp(View v) {
         attemptRegistration();
-    }
-
-
-    private void attemptRegistration() {
-
-        if(!validateFirstName() | !validateLastName() | !validateEmail() | !validatePhoneNumber() | !validatePassword() | !validateConfirmPassword()) {
-            return;
-        } else {
-            createFirebaseUser();
-        }
-    }
-
-
-    private void createFirebaseUser(){
-
-        String email = mEmailTextInputLayout.getEditText().getText().toString();
-        String password = mPasswordTextInputLayout.getEditText().getText().toString();
-        mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-
-                if(!task.isSuccessful()){
-                   showErrorDialog("Registration attempt failed");
-
-                    //Toast.makeText(getApplicationContext(),"Registration attempt failed",Toast.LENGTH_SHORT).show();
-
-                }else {
-                    saveDisplayName();
-                    saveUser();
-
-                    Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
-                    finish();
-                    startActivity(intent);
-                }
-            }
-        });
-    }
-
-
-    private void saveDisplayName() {
-
-        FirebaseUser user = mAuth.getCurrentUser();
-        String displayName = mFirstNameTextInputLayout.getEditText().getText().toString();
-
-        if (user !=null) {
-            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(displayName.toUpperCase())
-                    .build();
-
-            user.updateProfile(profileUpdates)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("Personal Feed App", "User name updated.");
-                            }
-                        }
-                    });
-
-        }
-
-    }
-
-    public void saveUser(){
-
-        String firstName = mFirstNameTextInputLayout.getEditText().getText().toString();
-        String lastName = mLastNameInputLayout.getEditText().getText().toString();
-        String email = mEmailTextInputLayout.getEditText().getText().toString();
-        String phoneNumber = mPhoneNumberInputLayout.getEditText().getText().toString();
-
-        User user =  new User(firstName,lastName,email,phoneNumber);
-
-        mDatabase.child("users/").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
-
-
-    }
-
-
-    // Alert Dialog if Registration fails
-
-    private void showErrorDialog(String message){
-
-        new AlertDialog.Builder(this)
-                .setTitle("Oops")
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok,null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
     }
 
 }

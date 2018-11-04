@@ -5,7 +5,7 @@
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
 
-    <string name="prompt_password">Password must be at least 8 characters</string>
+    <string name="prompt_password">Password</string>
     <string name="prompt_password_confirm">Confirm Password</string>
 
     <string name="action_sign_in">Sign in or register</string>
@@ -38,7 +38,7 @@
     <string name="sports_string"><u>Sports</u></string>
     <string name="sports_string_nav">Sports</string>
     <string name="top_stories_nav">Top Stories</string>
-    <string name="movie_review_string">Movies</string>
+    <string name="movie_review_string">Movies Review</string>
     <string name="books_string">Books</string>
     <string name="best_sellers_string">Best Sellers</string>
     <string name="or_sign_in_with_string">Or sign in with</string>
@@ -46,6 +46,7 @@
     <string name="search_movie_string">Search Movie</string>
     <string name="cancel_string">Cancel</string>
     <string name="search_string">Search</string>
+    <string name="sports_string_title"><u>Sports</u></string>
 
 
 </resources>

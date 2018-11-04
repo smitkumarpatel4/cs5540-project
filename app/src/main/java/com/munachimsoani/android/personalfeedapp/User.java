@@ -10,15 +10,17 @@ public class User {
     private String lastName;
     private String email;
     private String phoneNumber;
+    private String tokenID;
 
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String phoneNumber) {
+    public User(String firstName, String lastName, String email, String phoneNumber,String tokenID) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.tokenID = tokenID;
     }
 
 
@@ -56,5 +58,11 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getTokenID() {
+        return tokenID;
+    }
 
+    public void setTokenID(String tokenID) {
+        this.tokenID = tokenID;
+    }
 }
