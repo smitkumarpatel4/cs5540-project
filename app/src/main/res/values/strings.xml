@@ -48,5 +48,10 @@
     <string name="search_string">Search</string>
     <string name="sports_string_title"><u>Sports</u></string>
 
+    //String for Chat Activity
+    <string name="chat_send_button">Send</string>
+    <string name="chat_sign_out">Sign Out</string>
+
+
 
 </resources>
